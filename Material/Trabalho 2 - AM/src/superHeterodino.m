@@ -79,3 +79,52 @@
     hold on;%forca um grafico ser plotado em cima do outro.
     plot(eixoEmFreq, abs(respostaEmFreqDoFiltro1)*picoDoSpectro,'blue')%plotando a resposta em frequencia em cima da FFT de sinal em frequencia intermediaria apos a filtragem para entrar no amplificador.
 %}
+
+% teste CAG
+
+    temanhoDaJanelaDoCAG = 10;
+    ganhoDoCAG=1;
+
+    freq = 550000;
+    tempo=[0:(1/freq)/10:10*(1/freq)];
+  
+    % gerando sinais para teste{
+        sinalNormal = cos(2*pi*freq*tempo);
+        sinalAtenuado = exp(-tempo*100000).*cos(2*pi*freq*tempo);
+        sinalTotal = [sinalNormal sinalAtenuado];
+    %}
+    
+    %plotando sinais de teste{
+        figure()
+        subplot(3,1,1)
+        plot(sinalNormal,'red');
+        hold on
+        plot(sinalAtenuado,'green');
+        hold on
+        tempoTotal=[0:(1/freq)/10:2*10*(1/freq)+(1/freq/10)];
+        subplot(3,1,2);
+        plot(sinalTotal,'blue');
+        grid
+    %}
+    
+    
+    
+    %restauracao{
+    sinalRestaurado = sinalTotal(1,1:temanhoDaJanelaDoCAG);
+
+    rmsDesejado = 32;
+    rmsInical = rms(sinalAtenuado(1:temanhoDaJanelaDoCAG))
+    for j = temanhoDaJanelaDoCAG+1 : size(sinalTotal,2)
+        sinalRestaurado(j) = sinalTotal(j)*ganhoDoCAG;
+        rmsAtual = rms(sinalTotal(j-temanhoDaJanelaDoCAG:j));
+        ganhoDoCAG = rmsDesejado/rmsAtual;
+    end
+    %}
+    
+    %plotando sinal restaurado
+    subplot(3,1,3);
+    plot(sinalRestaurado,'red');
+    grid
+    %}
+
+%}
