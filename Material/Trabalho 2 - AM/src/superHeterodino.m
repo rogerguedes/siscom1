@@ -85,12 +85,12 @@
     temanhoDaJanelaDoCAG = 10;
     ganhoDoCAG=1;
 
-    freq = 550000;
+    freq = 10000;
     tempo=[0:(1/freq)/10:10*(1/freq)];
   
     % gerando sinais para teste{
         sinalNormal = cos(2*pi*freq*tempo);
-        sinalAtenuado = exp(-tempo*100000).*cos(2*pi*freq*tempo);
+        sinalAtenuado = exp(-tempo*1000).*cos(2*pi*freq*tempo);
         sinalTotal = [sinalNormal sinalAtenuado];
     %}
     
@@ -100,14 +100,23 @@
         plot(sinalNormal,'red');
         hold on
         plot(sinalAtenuado,'green');
-        hold on
+        grid
         tempoTotal=[0:(1/freq)/10:2*10*(1/freq)+(1/freq/10)];
         subplot(3,1,2);
         plot(sinalTotal,'blue');
-        grid
     %}
     
     
+    % modulando o sinal banda base de teste{
+        portadoraDeTeste = cos(2*pi*550000*tempoTotal);
+%         hold on
+%         plot(portadoraDeTeste,'red');
+%         grid
+        sinalDeTesteModulado = sinalTotal.*portadoraDeTeste;
+        hold on
+        plot(sinalDeTesteModulado,'black');
+        grid
+    %}
     
     %restauracao{
     sinalRestaurado = sinalTotal(1,1:temanhoDaJanelaDoCAG);
