@@ -26,6 +26,6 @@ plot(t,gT,'cyan');
 xgrid;
 fftDoSinalModulado=fft(sinalModulado);
 modFftDoSinalModulado=abs(fftDoSinalModulado);
-eixoEmFreq = linspace(0,freqDeAmostragem/2, (size(modFftDoSinalModulado,2)/2) )
+eixoEmFreq = linspace(0,freqDeAmostragem/2, (size(modFftDoSinalModulado,2)/2) );
 subplot(2,1,2);
 plot(eixoEmFreq, (modFftDoSinalModulado(1:floor(size(fftDoSinalModulado,2)/2))) / (size(fftDoSinalModulado,2)/2));
